@@ -1,20 +1,34 @@
-﻿// Ball.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿const double g = 9.8;
 
-#include <iostream>
+#include <cmath>
 #include "Ball.h"
 
+double quadratic_solve(double a, double b, double c) {
+    double det = b * b - 4 * a * c;
+    if (det == 0)
+        return (-b / (2 * a));
+    else
+        return ((-b - std::sqrt(det)) / (2 * a));
 
+}
 Ball::Ball(Point initialPos) {
-	position = initialPos;
-	vx = 0;
+    position = initialPos;
 }
 
 void Ball::push(double v, double alpha) {
-	vx += v * std::cos(alpha);
-	vy += v * std::sin(alpha);
+    vx += v * std::cos(alpha);
+    vy += v * std::sin(alpha);
 }
+
 void Ball::fly(double t) {
-	position.x += vx * t;
-	position.y += vy * t - g * t * t / 2;
+    position.x += vx * t;
+    while (position.y + vy * t - g * t * t / 2 < 0) {
+        double t1 = quadratic_solve(-g / 2, vy, position.y);
+        vy -= g * t1;
+        vy = -vy;
+        t = t - t1;
+        position.y = 0;
+    }
+    position.y += vy * t - g * t * t / 2;
+    vy -= g * t;
 }

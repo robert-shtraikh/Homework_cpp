@@ -1,17 +1,15 @@
-#include "Ball.h"
 #include "Ball.cpp"
-#include<iostream>
-#include<thread>
+#include <thread>
+#include <iostream>
 
 int main() {
-	Ball orange_ball(Point{2,3});
-	
-	orange_ball.push(10, 90);
-	for (double t = 0; t < 100; t += 0.5) {
-		orange_ball.fly(t);
-		std::cout << "Pos x:" << orange_ball.position.x << std::endl;
-		std::cout << "Pos y :" << orange_ball.position.y << std::endl;
-		std::cout << "\n";
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
-	}
+    Point a;
+    a.x = 2;
+    a.y = 3;
+    Ball orange_ball(a);
+    orange_ball.push(10, 1);
+    for (double t = 0; t < 10; t += 0.01) {
+        orange_ball.fly(t);
+        std::cout << orange_ball.position.x << " " << orange_ball.position.y << "\n";
+    }
 }
